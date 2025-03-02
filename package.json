@@ -9,6 +9,6 @@
     "express": "^4.17.1",
     "puppeteer-core": "^22.11.0",
     "@sparticuz/chromium": "^123.0.0",
-    "lambdafs": "^1.0.0"
+    "browserless": "^1.2.1"
   }
 }
