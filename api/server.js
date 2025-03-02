@@ -74,7 +74,7 @@ app.get('/api/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath,
+      executablePath: await chromium.executablePath(),
       headless: chromium.headless,
     });
     const page = await browser.newPage();
@@ -87,7 +87,7 @@ app.get('/api/scrape', async (req, res) => {
       return res.json({ message: 'Scraping skipped', results: [] });
     }
 
-    const results = await checkResult(page, intervalArray);
+    const results are await checkResult(page, intervalArray);
     await browser.close();
 
     res.json({ message: 'Scraping completed', results: results.map(r => ({ interval: r.interval, timeElapsed: r.timeElapsed })) });
