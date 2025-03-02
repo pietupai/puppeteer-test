@@ -33,7 +33,7 @@ app.get('/api/scrape', async (req, res) => {
     await page.goto(fullUrl, { waitUntil: 'networkidle0' });
 
     // Wait for a while to allow the JavaScript to execute and elements to load
-    await page.waitForTimeout(55000); // Wait for max 55 seconds
+    await page.waitForTimeout(10000); // Wait for 10 seconds
 
     // Log the HTML content of the page
     const htmlContent = await page.content();
