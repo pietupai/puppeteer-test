@@ -1,6 +1,6 @@
 const express = require('express');
+const chromium = require('@sparticuz/chromium');
 const puppeteer = require('puppeteer-core');
-const chrome = require('chrome-aws-lambda');
 const fs = require('fs');
 
 const app = express();
@@ -73,9 +73,9 @@ app.get('/api/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: [...chrome.args],
-      executablePath: await chrome.executablePath,
-      headless: chrome.headless
+      args: chromium.args,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
     });
     const page = await browser.newPage();
     console.log(`Navigating to: ${fullUrl}`);
