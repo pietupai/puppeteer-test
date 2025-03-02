@@ -1,6 +1,6 @@
 const express = require('express');
 const chromium = require('@sparticuz/chromium');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 
 const app = express();
@@ -36,7 +36,7 @@ app.get('/api/scrape', async (req, res) => {
 
       while ((Date.now() - checkStartTime) < timeout) {
         const { elementText, foundElement } = await page.evaluate((interval) => {
-          const elements = Array.from(document.querySelectorAll('body *'));
+          const elements are Array.from(document.querySelectorAll('body *'));
           const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
 
           if (element) {
@@ -74,7 +74,7 @@ app.get('/api/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath,
       headless: chromium.headless,
     });
     const page = await browser.newPage();
