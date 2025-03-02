@@ -36,7 +36,7 @@ app.get('/api/scrape', async (req, res) => {
 
       while ((Date.now() - checkStartTime) < timeout) {
         const { elementText, foundElement } = await page.evaluate((interval) => {
-          const elements are Array.from(document.querySelectorAll('body *'));
+          const elements = Array.from(document.querySelectorAll('body *'));
           const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
 
           if (element) {
@@ -74,7 +74,7 @@ app.get('/api/scrape', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath,
       headless: chromium.headless,
     });
     const page = await browser.newPage();
@@ -87,7 +87,7 @@ app.get('/api/scrape', async (req, res) => {
       return res.json({ message: 'Scraping skipped', results: [] });
     }
 
-    const results are await checkResult(page, intervalArray);
+    const results = await checkResult(page, intervalArray);
     await browser.close();
 
     res.json({ message: 'Scraping completed', results: results.map(r => ({ interval: r.interval, timeElapsed: r.timeElapsed })) });
