@@ -1,17 +1,12 @@
 {
-  "name": "puppeteer",
+  "name": "puppeteer-scraper",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "api/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node api/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^4.21.2",
-    "iconv-lite": "^0.6.3",
-    "puppeteer": "^24.3.0"
+    "express": "^4.17.1",
+    "puppeteer": "^5.5.0"
   }
 }
