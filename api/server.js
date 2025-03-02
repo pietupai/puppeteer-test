@@ -1,7 +1,9 @@
 const express = require('express');
 const chromium = require('@sparticuz/chromium');
 const puppeteer = require('puppeteer-core');
+const lambdafs = require('lambdafs');
 const fs = require('fs');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -72,11 +74,18 @@ app.get('/api/scrape', async (req, res) => {
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
   try {
+    const chromiumPath = await chromium.executablePath;
+
+    if (!chromiumPath) {
+      throw new Error('Chromium path not found.');
+    }
+
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath,
+      executablePath: chromiumPath,
       headless: chromium.headless,
     });
+
     const page = await browser.newPage();
     console.log(`Navigating to: ${fullUrl}`);
     await page.goto(fullUrl, { waitUntil: 'networkidle0' });
