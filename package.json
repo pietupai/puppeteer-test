@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "scripts": {
-    "start": "node api/server.js"
+    "start": "node api/server.js",
+    "postinstall": "apt-get install -y libnspr4 libnss3"
   },
   "dependencies": {
     "express": "^4.17.1",
