@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "scripts": {
-    "start": "node api/server.js",
-    "postinstall": "apt-get update && apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libxss1 libasound2"
+    "start": "node api/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "puppeteer-core": "^10.4.0",
-    "@sparticuz/chromium": "^114.0.0"
+    "puppeteer": "^22.11.0",
+    "puppeteer-core": "^22.11.0",
+    "@sparticuz/chromium": "^123.0.0"
   }
 }
