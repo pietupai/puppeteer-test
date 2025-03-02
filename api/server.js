@@ -1,5 +1,4 @@
 const express = require('express');
-const browserless = require('browserless')();
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
 const chromium = require('@sparticuz/chromium');
@@ -43,62 +42,4 @@ app.get('/api/scrape', async (req, res) => {
           if (element) {
             const startIndex = element.innerText.indexOf(`[*[***]*]Request made at ${interval}s:`);
             if (startIndex !== -1) {
-              const resultText = element.innerText.substring(startIndex, startIndex + 30);
-              return { elementText: resultText, foundElement: true };
-            }
-          }
-
-          return { elementText: 'null', foundElement: false };
-        }, interval);
-
-        if (foundElement) {
-          result = elementText;
-          break;
-        }
-
-        await new Promise(resolve => setTimeout(resolve, checkInterval));
-      }
-
-      results.push({ interval, timeElapsed, resultSnippet: result });
-    }
-
-    const log = results.map(r => `Interval: ${r.interval}s, Time Elapsed: ${r.timeElapsed.toFixed(2)}s, Result Snippet: ${r.resultSnippet}`).join('\n');
-    fs.writeFileSync('results.txt', log, 'utf8');
-
-    return results;
-  }
-
-  const intervalArray = intervals.split(',').map(Number);
-  const fullUrl = `${url}&intervals=${intervals}`;
-  console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
-
-  try {
-    const browser = await browserless.puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-    });
-
-    const page = await browser.newPage();
-    console.log(`Navigating to: ${fullUrl}`);
-    await page.goto(fullUrl, { waitUntil: 'networkidle0' });
-
-    if (skipCheck === 'true') {
-      console.log('Skipping checks as skipCheck is set to true');
-      await browser.close();
-      return res.json({ message: 'Scraping skipped', results: [] });
-    }
-
-    const results = await checkResult(page, intervalArray);
-    await browser.close();
-
-    res.json({ message: 'Scraping completed', results: results.map(r => ({ interval: r.interval, timeElapsed: r.timeElapsed })) });
-  } catch (error) {
-    console.error('Error during scraping:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+              const resultText = element.inner
