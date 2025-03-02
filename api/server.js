@@ -1,5 +1,6 @@
 const express = require('express');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chrome = require('chrome-aws-lambda');
 const fs = require('fs');
 
 const app = express();
@@ -71,7 +72,11 @@ app.get('/api/scrape', async (req, res) => {
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
   try {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      args: [...chrome.args],
+      executablePath: await chrome.executablePath,
+      headless: chrome.headless
+    });
     const page = await browser.newPage();
     console.log(`Navigating to: ${fullUrl}`);
     await page.goto(fullUrl, { waitUntil: 'networkidle0' });
