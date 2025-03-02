@@ -7,7 +7,7 @@ const port = 3000;
 
 app.use(express.json());
 
-app.get('/scrape', async (req, res) => {
+app.get('/api/scrape', async (req, res) => {
   const { url, intervals, skipCheck } = req.query;
 
   if (!url || !intervals) {
