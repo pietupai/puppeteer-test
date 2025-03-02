@@ -32,9 +32,6 @@ app.get('/api/scrape', async (req, res) => {
     console.log(`Navigating to: ${fullUrl}`);
     await page.goto(fullUrl, { waitUntil: 'networkidle0' });
 
-    // Wait for a while to allow the JavaScript to execute and elements to load
-    await page.waitForTimeout(10000); // Wait for 10 seconds
-
     // Log the HTML content of the page
     const htmlContent = await page.content();
     console.log(htmlContent);
@@ -45,27 +42,48 @@ app.get('/api/scrape', async (req, res) => {
       return res.json({ message: 'Scraping skipped', results: [] });
     }
 
+    const startTime = Date.now();
     const results = [];
     for (let interval of intervalArray) {
-      const result = await page.evaluate((interval) => {
-        const elements = Array.from(document.querySelectorAll('body *'));
-        const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
+      const nextTime = startTime + interval * 1000;
 
-        if (element) {
-          const startIndex = element.innerText.indexOf(`[*[***]*]Request made at ${interval}s:`);
-          if (startIndex !== -1) {
-            const resultText = element.innerText.substring(startIndex, startIndex + 30);
-            return { elementText: resultText, foundElement: true };
+      // Wait until the next interval
+      await page.waitForTimeout(nextTime - Date.now());
+
+      const timeElapsed = (Date.now() - startTime) / 1000;
+      console.log(`Checking result at interval ${interval}s, Time Elapsed: ${timeElapsed.toFixed(2)}s`);
+
+      const checkInterval = 500; // 500 ms välein tarkistus
+      const timeout = 5000; // 5 sekunnin timeout
+
+      const checkStartTime = Date.now();
+      let result = 'No element found within timeout period';
+
+      while ((Date.now() - checkStartTime) < timeout) {
+        const { elementText, foundElement } = await page.evaluate((interval) => {
+          const elements = Array.from(document.querySelectorAll('body *'));
+          const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
+
+          if (element) {
+            const startIndex = element.innerText.indexOf(`[*[***]*]Request made at ${interval}s:`);
+            if (startIndex !== -1) {
+              const resultText = element.innerText.substring(startIndex, startIndex + 50); // Keep it short but include time
+              return { elementText: resultText, foundElement: true };
+            }
           }
+
+          return { elementText: 'null', foundElement: false };
+        }, interval);
+
+        if (foundElement) {
+          result = elementText;
+          break;
         }
 
-        return { elementText: 'null', foundElement: false };
-      }, interval);
+        await page.waitForTimeout(checkInterval);
+      }
 
-      // Log result for debugging
-      console.log(`Interval: ${interval}, Result: ${JSON.stringify(result)}`);
-
-      results.push({ interval, resultSnippet: result.elementText });
+      results.push({ interval, timeElapsed, resultSnippet: result });
     }
 
     await browser.close();
