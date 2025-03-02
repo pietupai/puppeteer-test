@@ -32,6 +32,10 @@ app.get('/api/scrape', async (req, res) => {
     console.log(`Navigating to: ${fullUrl}`);
     await page.goto(fullUrl, { waitUntil: 'networkidle0' });
 
+    // Log the HTML content of the page
+    const htmlContent = await page.content();
+    console.log(htmlContent);
+
     if (skipCheck === 'true') {
       console.log('Skipping checks as skipCheck is set to true');
       await browser.close();
@@ -54,6 +58,9 @@ app.get('/api/scrape', async (req, res) => {
 
         return { elementText: 'null', foundElement: false };
       }, interval);
+
+      // Log result for debugging
+      console.log(`Interval: ${interval}, Result: ${JSON.stringify(result)}`);
 
       results.push({ interval, resultSnippet: result.elementText });
     }
