@@ -1,5 +1,5 @@
 const express = require('express');
-const { chromium } = require('playwright');
+const playwright = require('playwright-aws-lambda');
 const app = express();
 const port = 3000;
 
@@ -17,9 +17,10 @@ app.get('/api/scrape', async (req, res) => {
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
   try {
-    const browser = await chromium.launch({
-      args: ['--hide-scrollbars', '--disable-web-security'],
-      headless: true,
+    const browser = await playwright.launchChromium({
+      args: playwright.args,
+      executablePath: await playwright.executablePath,
+      headless: true
     });
 
     const context = await browser.newContext();
