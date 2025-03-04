@@ -1,13 +1,10 @@
-{
-  "name": "puppeteer-scraper",
-  "version": "1.0.0",
-  "main": "api/server.js",
-  "scripts": {
-    "start": "node api/server.js"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "puppeteer-core": "^10.1.0",
-    "@sparticuz/chromium-min": "^132.0.0"
-  }
+"dependencies": {
+  "express": "^4.17.1",
+  "puppeteer-core": "^10.1.0",
+  "@sparticuz/chromium-min": "^132.0.0",
+  "download": "^8.0.0" // Add the download package
+},
+"scripts": {
+  "postinstall": "node install-chromium.js",
+  "start": "node api/server.js"
 }
