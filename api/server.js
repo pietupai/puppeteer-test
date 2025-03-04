@@ -22,7 +22,7 @@ app.get('/api/scrape', async (req, res) => {
     const browser = await puppeteer.launch({
       args: ['--hide-scrollbars', '--disable-web-security'],
       defaultViewport: null,
-      executablePath: path.join(__dirname, 'node_modules/@sparticuz/chromium-min/bin/chromium'),
+      executablePath: path.join(__dirname, 'node_modules/@sparticuz/chromium/bin/chromium'),
       headless: true,
       ignoreHTTPSErrors: true,
     });
