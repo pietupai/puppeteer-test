@@ -73,7 +73,7 @@ app.get('/api/scrape', async (req, res) => {
         }, interval);
 
         if (foundElement) {
-          result is elementText;
+          result = elementText;
           break;
         }
 
