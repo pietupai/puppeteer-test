@@ -1,6 +1,6 @@
 const express = require('express');
-const chromium = require('@sparticuz/chromium-min');
 const puppeteer = require('puppeteer-core');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -20,12 +20,10 @@ app.get('/api/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(
-        `https://github.com/Sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar`
-      ),
-      headless: chromium.headless,
+      args: ['--hide-scrollbars', '--disable-web-security'],
+      defaultViewport: null,
+      executablePath: process.env.CHROME_PATH, // Use the CHROME_PATH environment variable
+      headless: true,
       ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
@@ -53,8 +51,8 @@ app.get('/api/scrape', async (req, res) => {
       const timeElapsed = (Date.now() - startTime) / 1000;
       console.log(`Checking result at interval ${interval}s, Time Elapsed: ${timeElapsed.toFixed(2)}s`);
 
-      const checkInterval = 500; // 500 ms välein tarkistus
-      const timeout = 5000; // 5 sekunnin timeout
+      const checkInterval = 500; // Check every 500 ms
+      const timeout = 5000; // Timeout after 5 seconds
 
       const checkStartTime = Date.now();
       let result = 'No element found within timeout period';
