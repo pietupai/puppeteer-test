@@ -1,4 +1,3 @@
-
 const express = require('express');
 const { Cluster } = require('puppeteer-cluster');
 const chromium = require('@sparticuz/chromium');
