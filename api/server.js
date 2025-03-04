@@ -1,6 +1,6 @@
 const express = require('express');
-const chromium = require('@sparticuz/chromium-min');
 const puppeteer = require('puppeteer-core');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -20,12 +20,10 @@ app.get('/api/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath(
-        `https://github.com/Sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar`
-      ),
-      headless: chromium.headless,
+      args: ['--hide-scrollbars', '--disable-web-security'],
+      defaultViewport: null,
+      executablePath: process.env.CHROME_PATH,
+      headless: true,
       ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
