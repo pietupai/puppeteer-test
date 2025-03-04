@@ -4,7 +4,7 @@
   "main": "api/server.js",
   "scripts": {
     "start": "node api/server.js",
-    "install-playwright": "npx playwright install chromium"
+    "postinstall": "npx playwright install"
   },
   "dependencies": {
     "express": "^4.17.1",
