@@ -1,3 +1,4 @@
+
 const express = require('express');
 const chromium = require('@sparticuz/chromium');
 const puppeteer = require('puppeteer-core');
@@ -36,7 +37,11 @@ app.get('/api/scrape', async (req, res) => {
     if (skipCheck === 'true') {
       console.log('Skipping checks as skipCheck is set to true');
       await browser.close();
-      return res.json({ message: 'Scraping skipped', results: [] });
+
+      const endExecutionTime = Date.now(); // End timing the execution
+      const executionTime = endExecutionTime - startExecutionTime;
+      
+      return res.json({ message: 'Scraping skipped', results: [], executionTime: `${executionTime}ms` });
     }
 
     const startTime = Date.now();
@@ -85,7 +90,7 @@ app.get('/api/scrape', async (req, res) => {
 
     await browser.close();
 
-    res.json({ message: 'Scraping completed', results });
+    res.json({ message: 'Scraping completed', results` });
   } catch (error) {
     console.error('Error during scraping:', error);
     res.status(500).json({ error: error.message });
@@ -93,4 +98,5 @@ app.get('/api/scrape', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log
+  console.log(`Server running at http://localhost:${port}`);
+});
