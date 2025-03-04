@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "api/server.js",
   "scripts": {
-    "preinstall": "apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libxss1 libasound2",
     "start": "node api/server.js"
   },
   "dependencies": {
