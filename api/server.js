@@ -1,6 +1,6 @@
 const express = require('express');
+const chromium = require('@sparticuz/chromium-min');
 const puppeteer = require('puppeteer-core');
-const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -20,10 +20,10 @@ app.get('/api/scrape', async (req, res) => {
 
   try {
     const browser = await puppeteer.launch({
-      args: ['--hide-scrollbars', '--disable-web-security'],
-      defaultViewport: null,
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-      headless: true,
+      args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
       ignoreHTTPSErrors: true,
     });
     const page = await browser.newPage();
