@@ -35,8 +35,6 @@ app.get('/api/scrape', async (req, res) => {
   const fullUrl = `${url}&intervals=${intervals}`;
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
-  const startExecutionTime = Date.now(); // Start timing the execution
-
   try {
     if (!clusterInitialized) {
       global.cluster = await initCluster();
@@ -99,10 +97,7 @@ app.get('/api/scrape', async (req, res) => {
       }
     });
 
-    const endExecutionTime = Date.now(); // End timing the execution
-    const executionTime = endExecutionTime - startExecutionTime;
-
-    res.json({ message: 'Scraping completed', results, executionTime: `${executionTime}ms` });
+    res.json({ message: 'Scraping completed', results });
   } catch (error) {
     console.error('Error during scraping:', error);
     res.status(500).json({ error: error.message });
