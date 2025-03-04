@@ -1,10 +1,15 @@
-"dependencies": {
-  "express": "^4.17.1",
-  "puppeteer-core": "^10.1.0",
-  "@sparticuz/chromium-min": "^132.0.0",
-  "download": "^8.0.0" 
-},
-"scripts": {
-  "postinstall": "node install-chromium.js",
-  "start": "node api/server.js"
+{
+  "name": "puppeteer-test",
+  "version": "1.0.0",
+  "main": "api/server.js",
+  "scripts": {
+    "postinstall": "node install-chromium.js",
+    "start": "node api/server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "puppeteer-core": "^10.1.0",
+    "@sparticuz/chromium-min": "^132.0.0",
+    "download": "^8.0.0"
+  }
 }
