@@ -22,7 +22,7 @@ app.get('/api/scrape', async (req, res) => {
     const browser = await puppeteer.launch({
       args: ['--hide-scrollbars', '--disable-web-security'],
       defaultViewport: null,
-      executablePath: process.env.CHROME_PATH,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
       headless: true,
       ignoreHTTPSErrors: true,
     });
