@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "api/server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          ".vercel/.cache/**"
+        ]
+      }
     },
     {
       "src": "index.html",
@@ -19,5 +24,8 @@
       "src": "/",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "env": {
+    "PLAYWRIGHT_BROWSERS_PATH": "0"
+  }
 }
