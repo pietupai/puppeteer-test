@@ -1,13 +1,15 @@
+
 {
-  "name": "playwright-test",
+  "name": "puppeteer-test",
   "version": "1.0.0",
   "main": "api/server.js",
   "scripts": {
-    "start": "node api/server.js",
-    "postinstall": "npx playwright install"
+    "start": "node api/server.js"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "playwright": "^1.23.0"
+    "puppeteer-core": "^10.1.0",
+    "@sparticuz/chromium": "^132.0.0",
+    "puppeteer-cluster": "^0.23.0"
   }
 }
