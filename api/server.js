@@ -18,6 +18,8 @@ app.get('/api/scrape', async (req, res) => {
   const fullUrl = `${url}&intervals=${intervals}`;
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
+  const startExecutionTime = Date.now(); // Start timing the execution
+
   try {
     const browser = await puppeteer.launch({
       args: [...chromium.args, '--hide-scrollbars', '--disable-web-security'],
@@ -36,7 +38,11 @@ app.get('/api/scrape', async (req, res) => {
     if (skipCheck === 'true') {
       console.log('Skipping checks as skipCheck is set to true');
       await browser.close();
-      return res.json({ message: 'Scraping skipped', results: [] });
+
+      const endExecutionTime = Date.now(); // End timing the execution
+      const executionTime = endExecutionTime - startExecutionTime;
+      
+      return res.json({ message: 'Scraping skipped', results: [], executionTime: `${executionTime}ms` });
     }
 
     const startTime = Date.now();
@@ -84,7 +90,11 @@ app.get('/api/scrape', async (req, res) => {
     }
 
     await browser.close();
-    res.json({ message: 'Scraping completed', results });
+
+    const endExecutionTime = Date.now(); // End timing the execution
+    const executionTime = endExecutionTime - startExecutionTime;
+
+    res.json({ message: 'Scraping completed', results, executionTime: `${executionTime}ms` });
   } catch (error) {
     console.error('Error during scraping:', error);
     res.status(500).json({ error: error.message });
