@@ -2,7 +2,7 @@ const download = require('download');
 const path = require('path');
 
 const chromiumUrl = 'https://github.com/Sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar';
-const chromiumPath = path.join(__dirname, 'node_modules/@sparticuz/chromium-min/bin');
+const chromiumPath = path.join(__dirname, 'node_modules/@sparticuz/chromium/bin');
 
 (async () => {
   try {
