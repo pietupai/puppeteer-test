@@ -10,7 +10,7 @@ let browser;
 (async () => {
   browser = await chromium.launch({
     args: ['--hide-scrollbars', '--disable-web-security'],
-    headless: true
+    headless: true,
   });
 })();
 
