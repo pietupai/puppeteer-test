@@ -90,7 +90,7 @@ app.get('/api/scrape', async (req, res) => {
 
     await browser.close();
 
-    res.json({ message: 'Scraping completed', results` });
+    res.json({ message: 'Scraping completed', results });
   } catch (error) {
     console.error('Error during scraping:', error);
     res.status(500).json({ error: error.message });
