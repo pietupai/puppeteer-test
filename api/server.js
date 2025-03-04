@@ -1,6 +1,7 @@
 const express = require('express');
 const puppeteer = require('puppeteer-core');
 const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const port = 3000;
@@ -19,10 +20,21 @@ app.get('/api/scrape', async (req, res) => {
   console.log(`Received request: url=${fullUrl}, intervals=${intervals}`);
 
   try {
+    const executablePath = path.join(__dirname, 'node_modules/@sparticuz/chromium/bin/chromium');
+    
+    // Log the executable path
+    console.log(`Using Chromium executable at: ${executablePath}`);
+    
+    // Check if the file exists
+    if (!fs.existsSync(executablePath)) {
+      console.error('Chromium executable not found!');
+      return res.status(500).json({ error: 'Chromium executable not found!' });
+    }
+
     const browser = await puppeteer.launch({
       args: ['--hide-scrollbars', '--disable-web-security'],
       defaultViewport: null,
-      executablePath: path.join(__dirname, 'node_modules/@sparticuz/chromium/bin/chromium'),
+      executablePath,
       headless: true,
       ignoreHTTPSErrors: true,
     });
