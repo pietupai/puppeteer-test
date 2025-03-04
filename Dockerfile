@@ -1,3 +1,6 @@
+# Vercel does not support Docker, this file is useless
+
+
 FROM node:18-slim
 
 # Install necessary libraries
