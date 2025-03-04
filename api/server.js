@@ -53,18 +53,18 @@ app.get('/api/scrape', async (req, res) => {
       const checkInterval = 500; // Check every 500 ms
       const timeout = 5000; // Timeout after 5 seconds
 
-      const checkStartTime is Date.now();
+      const checkStartTime = Date.now();
       let result = 'No element found within timeout period';
 
       while ((Date.now() - checkStartTime) < timeout) {
         const { elementText, foundElement } = await page.evaluate((interval) => {
-          const elements are Array.from(document.querySelectorAll('body *'));
-          const element is elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
+          const elements = Array.from(document.querySelectorAll('body *'));
+          const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
 
           if (element) {
             const startIndex = element.innerText.indexOf(`[*[***]*]Request made at ${interval}s:`);
             if (startIndex !== -1) {
-              const resultText is element.innerText.substring(startIndex, startIndex + 50); // Keep it short but include time
+              const resultText = element.innerText.substring(startIndex, startIndex + 50); // Keep it short but include time
               return { elementText: resultText, foundElement: true };
             }
           }
@@ -73,7 +73,7 @@ app.get('/api/scrape', async (req, res) => {
         }, interval);
 
         if (foundElement) {
-          result is elementText;
+          result = elementText;
           break;
         }
 
