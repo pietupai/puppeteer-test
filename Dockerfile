@@ -1,6 +1,6 @@
 FROM node:18-slim
 
-# Asenna tarvittavat kirjastot
+# Install necessary libraries
 RUN apt-get update && apt-get install -y \
   libnss3 \
   libnspr4 \
@@ -13,22 +13,24 @@ RUN apt-get update && apt-get install -y \
   wget \
   tar
 
-# Luo työskentelyhakemisto
+# Set working directory
 WORKDIR /usr/src/app
 
-# Kopioi projektin tiedostot
+# Copy project files
 COPY . .
 
-# Asenna riippuvuudet
+# Install dependencies
 RUN npm install
 
-# Lataa ja pura Chromium
-RUN wget https://github.com/Sparticuz/chromium/releases/download/v132.0.0/chromium-v132.0.0-pack.tar -O /tmp/chromium.tar && \
-    tar -xvf /tmp/chromium.tar -C /usr/src/app && \
-    rm /tmp/chromium.tar
+# Download and unpack Chromium
+RUN wget https://storage.googleapis.com/chromium-browser-snapshots/Linux_x64/901912/chrome-linux.zip -O /tmp/chromium.zip && \
+    mkdir /usr/src/app/chromium && \
+    unzip /tmp/chromium.zip -d /usr/src/app/chromium && \
+    mv /usr/src/app/chromium/chrome-linux/* /usr/src/app/chromium/ && \
+    rm /tmp/chromium.zip
 
-# Aseta ympäristömuuttuja
-ENV CHROME_PATH="/usr/src/app/chromium/chromium"
+# Set environment variable for Puppeteer
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/src/app/chromium/chrome"
 
-# Käynnistä sovellus
+# Start the application
 CMD ["npm", "start"]
