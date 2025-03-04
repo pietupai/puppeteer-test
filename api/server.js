@@ -8,10 +8,10 @@ const port = 3000;
 
 app.use(express.json());
 
-let cluster;
+let clusterInitialized = false;
 
-(async () => {
-  cluster = await Cluster.launch({
+async function initCluster() {
+  return await Cluster.launch({
     concurrency: Cluster.CONCURRENCY_PAGE,
     maxConcurrency: 2,
     puppeteer,
@@ -22,7 +22,7 @@ let cluster;
       headless: chromium.headless,
     },
   });
-})();
+}
 
 app.get('/api/scrape', async (req, res) => {
   const { url, intervals, skipCheck } = req.query;
@@ -38,8 +38,13 @@ app.get('/api/scrape', async (req, res) => {
   const startExecutionTime = Date.now(); // Start timing the execution
 
   try {
+    if (!clusterInitialized) {
+      global.cluster = await initCluster();
+      clusterInitialized = true;
+    }
+
     const results = [];
-    await cluster.task(async ({ page }) => {
+    await global.cluster.task(async ({ page }) => {
       console.log(`Navigating to: ${fullUrl}`);
       await page.goto(fullUrl, { waitUntil: 'networkidle0' });
 
