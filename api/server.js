@@ -19,6 +19,7 @@ app.get('/api/scrape', async (req, res) => {
   try {
     const browser = await chromium.launch({
       args: ['--hide-scrollbars', '--disable-web-security'],
+      executablePath: '/opt/homebrew/bin/playwright-chromium', // Specify the correct path to the browser binary
       headless: true,
     });
 
