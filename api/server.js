@@ -58,8 +58,8 @@ app.get('/api/scrape', async (req, res) => {
 
       while ((Date.now() - checkStartTime) < timeout) {
         const { elementText, foundElement } = await page.evaluate((interval) => {
-          const elements are Array.from(document.querySelectorAll('body *'));
-          const element is elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
+          const elements = Array.from(document.querySelectorAll('body *'));
+          const element = elements.find(el => el.innerText.includes(`[*[***]*]Request made at ${interval}s:`));
 
           if (element) {
             const startIndex = element.innerText.indexOf(`[*[***]*]Request made at ${interval}s:`);
